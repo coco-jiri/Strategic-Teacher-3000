@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Teacher 3000</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <main class="lesson-planner">
+            <header class="planner-header">
+                <div class="header-titles">
+                    <div class="column-title">Cíle</div>
+                    <div class="column-title">Metody</div>
+                    <div class="column-title">Poznámky</div>
+                </div>
+                <div class="header-controls">
+                    <button id="export-btn" class="control-btn" title="Exportovat do JSON"><i class="fas fa-file-export"></i></button>
+                    <button id="import-btn" class="control-btn" title="Importovat z JSON"><i class="fas fa-file-import"></i></button>
+                    <input type="file" id="import-file-input" style="display: none;" accept=".json">
+                    <button id="theme-switcher" class="control-btn" title="Přepnout světlý/tmavý režim"><i class="fas fa-moon"></i></button>
+                </div>
+            </header>
+            <div id="lesson-blocks-container">
+                <!-- Lesson blocks will be generated here -->
+            </div>
+            <div class="add-block-wrapper">
+                <button id="add-lesson-block" class="add-button" title="Přidat nový výukový blok"><i class="fas fa-plus"></i></button>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div id="sidebar-panels">
+                 <!-- Sidebar panels will be generated here -->
+            </div>
+            <div id="delete-zone" class="delete-zone" title="Smazat přetaženou položku">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+        </aside>
+    </div>
+
+    <!-- TEMPLATES -->
+    <template id="lesson-block-template">
+        <div class="lesson-block" draggable="true">
+            <div class="block-menu">
+                <button class="menu-btn-dots"><span></span><span></span><span></span></button>
+                <div class="menu-content">
+                    <a href="#" class="block-properties">Vlastnosti</a>
+                    <a href="#" class="move-block">Přesunout</a>
+                    <a href="#" class="delete-block">Smazat</a>
+                </div>
+            </div>
+            <div class="column goals-column">
+                <div class="goals-content-target drop-zone"></div>
+                <div class="goals-softskill-target drop-zone"></div>
+            </div>
+            <div class="column methods-column drop-zone"></div>
+            <div class="column notes-column drop-zone" data-type="notes">
+                <div class="notes-content"></div>
+                <button class="add-note-btn add-button-small" title="Přidat poznámku"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+    </template>
+
+    <template id="sidebar-panel-template">
+        <div class="menu-panel">
+            <div class="panel-header">
+                <h3 class="panel-title"></h3>
+                <div class="panel-controls">
+                    <button class="add-item-btn add-button-small" title="Přidat novou položku"><i class="fas fa-plus"></i></button>
+                    <i class="fas fa-chevron-up collapse-icon"></i>
+                </div>
+            </div>
+            <div class="panel-content drop-zone">
+                <!-- Sidebar items will be generated here -->
+            </div>
+        </div>
+    </template>
+
+    <template id="menu-item-template">
+        <div class="menu-item" draggable="true"></div>
+    </template>
+
+    <template id="block-item-template">
+        <div class="block-item" draggable="true">
+            <div class="item-menu">
+                <button class="menu-btn-dots"><span></span><span></span><span></span></button>
+                 <div class="menu-content">
+                    <a href="#" class="edit-item">Upravit</a>
+                    <a href="#" class="details-item">Podrobnosti</a>
+                    <a href="#" class="delete-item">Smazat</a>
+                </div>
+            </div>
+            <div class="item-title"></div>
+            <div class="item-subtitle"></div>
+            <div class="item-details" style="display: none;"></div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
