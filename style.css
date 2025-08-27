@@ -13,8 +13,7 @@
     --delete-zone-active-bg: #c82333;
     --icon-color: #6c757d;
     --separator-color: #dee2e6;
-
-    --block-hue: 200; /* Bude přepsáno pro každý blok */
+    --modal-overlay-bg: rgba(0, 0, 0, 0.5);
 }
 
 .dark-mode {
@@ -30,6 +29,7 @@
     --drop-zone-border: #0d6efd;
     --icon-color: #adb5bd;
     --separator-color: #333;
+    --modal-overlay-bg: rgba(0, 0, 0, 0.7);
 }
 
 * {
@@ -54,11 +54,23 @@ body {
 /* Plánovač a bloky */
 .lesson-planner {
     flex-grow: 1;
-    padding: 1rem;
+    padding: 0 1rem;
     overflow-y: auto;
     height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+#plan-title {
+    font-size: 1.75rem;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#plan-title:hover {
+    background-color: var(--sidebar-bg);
 }
 
 .planner-header {
@@ -127,7 +139,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow-color);
     position: relative;
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition: box-shadow 0.2s, transform 0.2s, background-color 0.3s;
     background-color: hsl(var(--block-hue), 60%, 95%);
 }
 .dark-mode .lesson-block {
@@ -150,6 +162,7 @@ body {
 
 .goals-column {
     background-color: hsl(var(--block-hue), 70%, 92%);
+    transition: background-color 0.3s;
 }
 .dark-mode .goals-column {
     background-color: hsl(var(--block-hue), 30%, 25%);
@@ -158,17 +171,14 @@ body {
 .goals-column .drop-zone {
     flex: 1;
     min-height: 50px;
-    border: 2px dashed transparent;
-    border-radius: 4px;
-    padding: 0.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    transition: border-color 0.2s, background-color 0.2s;
 }
 
 .methods-column {
     background-color: hsl(var(--block-hue), 80%, 90%);
+    transition: background-color 0.3s;
 }
 .dark-mode .methods-column {
     background-color: hsl(var(--block-hue), 35%, 22%);
@@ -177,6 +187,7 @@ body {
 .notes-column {
     background-color: hsl(var(--block-hue), 90%, 88%);
     justify-content: space-between;
+    transition: background-color 0.3s;
 }
 .dark-mode .notes-column {
      background-color: hsl(var(--block-hue), 40%, 19%);
@@ -303,6 +314,7 @@ body {
     font-size: 0.8em;
     color: var(--icon-color);
     margin-top: 2px;
+    cursor: pointer;
 }
 .block-item .item-subtitle a {
     color: var(--accent-color);
@@ -497,3 +509,92 @@ textarea.editable-input {
     height: 80px;
     resize: vertical;
 }
+
+/* Modal Dialog */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-overlay-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-dialog {
+    background-color: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 500px;
+    transform: scale(0.9);
+    transition: transform 0.3s;
+}
+.modal-overlay.visible .modal-dialog {
+    transform: scale(1);
+}
+.modal-title {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+.modal-body {
+    margin-bottom: 1.5rem;
+}
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+.modal-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+.modal-btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+.modal-btn-secondary {
+    background-color: var(--panel-header-bg);
+    color: var(--text-color);
+    border: 1px solid var(--item-border);
+}
+
+/* Modal Form Elements */
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+.form-group input[type="range"],
+.form-group input[type="number"] {
+    width: 100%;
+}
+.hue-slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.hue-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--item-border);
+    flex-shrink: 0;
+}
+
