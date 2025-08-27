@@ -11,6 +11,7 @@
 
     <div class="app-container">
         <main class="lesson-planner">
+            <h1 id="plan-title" title="Dvojklikem upravíte název">Informatika 1. ročník</h1>
             <header class="planner-header">
                 <div class="header-titles">
                     <div class="column-title">Cíle</div>
@@ -42,6 +43,16 @@
         </aside>
     </div>
 
+    <!-- MODAL DIALOG -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-dialog">
+            <h3 id="modal-title" class="modal-title"></h3>
+            <div id="modal-body" class="modal-body"></div>
+            <div id="modal-footer" class="modal-footer"></div>
+        </div>
+    </div>
+
+
     <!-- TEMPLATES -->
     <template id="lesson-block-template">
         <div class="lesson-block" draggable="true">
@@ -54,10 +65,10 @@
                 </div>
             </div>
             <div class="column goals-column">
-                <div class="goals-content-target drop-zone"></div>
-                <div class="goals-softskill-target drop-zone"></div>
+                <div class="goals-content-target drop-zone" data-type="contentGoals"></div>
+                <div class="goals-softskill-target drop-zone" data-type="softSkillGoals"></div>
             </div>
-            <div class="column methods-column drop-zone"></div>
+            <div class="column methods-column drop-zone" data-type="methods"></div>
             <div class="column notes-column drop-zone" data-type="notes">
                 <div class="notes-content"></div>
                 <button class="add-note-btn add-button-small" title="Přidat poznámku"><i class="fas fa-plus"></i></button>
