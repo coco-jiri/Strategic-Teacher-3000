@@ -2,65 +2,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- DATA MODEL ---
 
-    let lessonPlan = {
+    let lessonPlan = {};
+    const initialPlanState = {
+        title: 'Informatika 1. ročník',
         sidebar: {
-            contentGoals: {
-                id: 'contentGoals',
-                title: 'Obsahové cíle',
-                allowAdd: true,
-                items: [
-                    { id: 'cg1', text: 'Ukládání' },
-                    { id: 'cg2', text: 'Práce s klávesnicí' },
-                    { id: 'cg3', text: 'Cloudové sdílení' },
-                ]
-            },
-            softSkills: {
-                id: 'softSkills',
-                title: 'Softskillové cíle',
-                allowAdd: false,
-                items: [
-                    { id: 'ss1', text: 'Schopnost naslouchat' },
-                    { id: 'ss2', text: 'Prezentační dovednosti' },
-                    { id: 'ss3', text: 'Schopnost řešit problémy' },
-                ]
-            },
-            methods: {
-                id: 'methods',
-                title: 'Metody',
-                allowAdd: true,
-                items: [
-                    { id: 'm1', text: 'Dokončování příběhů' },
-                    { id: 'm2', text: 'Dramatizace' },
-                    { id: 'm3', text: 'Insert' },
-                ]
-            },
-            bigQuestions: {
-                id: 'bigQuestions',
-                title: 'Velké otázky',
-                allowAdd: true,
-                items: [
-                    { id: 'bq1', text: 'Jakým způsobem se dá využít AI k vlastnímu učení?' },
-                    { id: 'bq2', text: 'Co znamená, že počítače fungují jen na 1 a 0?' },
-                    { id: 'bq3', text: 'Jaké výzvy přináší AI pro lidstvo a pro mě?' },
-                ]
-            }
+            contentGoals: { id: 'contentGoals', title: 'Obsahové cíle', allowAdd: true, items: [ { id: 'cg1', text: 'Ukládání' }, { id: 'cg2', text: 'Práce s klávesnicí' } ] },
+            softSkills: { id: 'softSkills', title: 'Softskillové cíle', allowAdd: false, items: [ { id: 'ss1', text: 'Schopnost naslouchat' }, { id: 'ss2', text: 'Prezentační dovednosti' } ] },
+            methods: { id: 'methods', title: 'Metody', allowAdd: true, items: [ { id: 'm1', text: 'Dokončování příběhů' }, { id: 'm2', text: 'Dramatizace' } ] },
+            bigQuestions: { id: 'bigQuestions', title: 'Velké otázky', allowAdd: true, items: [ { id: 'bq1', text: 'Jakým způsobem se dá využít AI k vlastnímu učení?' }, { id: 'bq2', text: 'Co znamená, že počítače fungují jen na 1 a 0?' } ] }
+        },
+        softSkillSteps: {
+          'Schopnost naslouchat': Array.from({length: 16}, (_, i) => ({ step: i, description: ['Dokážu ostatním chvíli naslouchat.','Dokážu naslouchat dospělým, řídit se jejich pokyny a zopakovat, co jsem slyšel.','Dokážu naslouchat spolužákům a ptát se na to, co jsem slyšel.','Dokážu sledovat rozhovor a zrekapitulovat, čeho se týkal.','Dokážu vysvětlit, že komunikace má různé účely, a umím účel komunikace identifikovat.','Dokážu poslouchat delší projev a umím rozpoznat klíčové informace, které potřebuji.','Dokážu se účastnit skupinové diskuze a odpovídat na otázky.','Dokážu analyzovat, jak mluvčí používá gesta a jazyk k upoutání pozornosti posluchačů.','Umím analyzovat, jak mluvčí mění jazyk za různými účely.','Umím analyzovat tón mluvčího, rozpoznat, na co klade důraz, jaké je jeho společenské postavení a jaký to má vliv na posluchače.','Umím pokládat prohlubující a rozšiřující otázky, abych si ověřil a prohloubil vlastní porozumění.','Dokážu rozeznat a analyzovat odlišné názory různých mluvčích.','Dokážu při poslechu identifikovat nevyjádřená témata, implikace a problémy.','Při poslechu dokážu skrze jazyk, vynechané informace a nejednoznačnost řeči analyzovat zaujatost mluvčího.','Umím analyzovat řečové techniky a přístup mluvčího v různých kontextech.','Dokážu dát mluvčímu zpětnou vazbu o tom, co může zlepšit, aby měl vynikající projev.'][i] })),
+          'Prezentační dovednosti': Array.from({length: 16}, (_, i) => ({ step: i, description: ['Dokážu něco srozumitelně sdělit někomu, koho znám.','Dokážu něco srozumitelně sdělit malé skupince lidí, které znám.','Dokážu srozumitelně sdělit své myšlenky skupině lidí.','Když mluvím, řadím své myšlenky tak, aby byly pochopitelné.','Svá sdělení umím uspořádat tak, aby mi posluchači co nejlépe rozuměli.','Při projevu umím využívat formální jazyk, tón a výraz.','Svou řeč umím přizpůsobit účelu prezentace a publiku.','Dokážu svůj projev strukturovat tak, aby byl srozumitelný a zajímavý, a ke svým sdělením uvádím příklady.','Dokážu upravit jazykové prostředky a míru podrobností, aby byl můj projev v daném kontextu co nejzajímavější.','Dokážu upravit strukturu projevu, jazyk a gesta tak, abych zaujal publikum.','Dokážu měnit jazyk, tón a výraz podle automatických i vědomých reakcí svých posluchačů.','Dokážu předvídat různé reakce publika a připravit se na ně.','Aby byl můj projev zajímavější, umím být flexibilní – dokážu např. měnit jeho styl a obsah.','Zabývám se různými prezentačními styly a uvažuji nad jejich efektivitou.','Uvažuji o efektivitě různých prezentačních stylů a umím si vybrat styl, který je pro mě nejvhodnější.','Dokážu pronést efektivní projev, který má osobitý styl a je přizpůsobený situaci, a umím reflektovat, proč byl efektivní.'][i] })),
         },
         blocks: [],
-        config: {
-            nextBlockId: 1,
-            nextItemId: 1,
-            startHue: Math.floor(Math.random() * 360),
-            hueStep: 45,
-        }
+        config: { nextBlockId: 1, nextItemId: 1, startHue: Math.floor(Math.random() * 360), hueStep: 45 }
     };
 
-    const softSkillSteps = {
-      'Schopnost naslouchat': Array.from({length: 16}, (_, i) => ({ step: i, description: ['Dokážu ostatním chvíli naslouchat.','Dokážu naslouchat dospělým, řídit se jejich pokyny a zopakovat, co jsem slyšel.','Dokážu naslouchat spolužákům a ptát se na to, co jsem slyšel.','Dokážu sledovat rozhovor a zrekapitulovat, čeho se týkal.','Dokážu vysvětlit, že komunikace má různé účely, a umím účel komunikace identifikovat.','Dokážu poslouchat delší projev a umím rozpoznat klíčové informace, které potřebuji.','Dokážu se účastnit skupinové diskuze a odpovídat na otázky.','Dokážu analyzovat, jak mluvčí používá gesta a jazyk k upoutání pozornosti posluchačů.','Umím analyzovat, jak mluvčí mění jazyk za různými účely.','Umím analyzovat tón mluvčího, rozpoznat, na co klade důraz, jaké je jeho společenské postavení a jaký to má vliv na posluchače.','Umím pokládat prohlubující a rozšiřující otázky, abych si ověřil a prohloubil vlastní porozumění.','Dokážu rozeznat a analyzovat odlišné názory různých mluvčích.','Dokážu při poslechu identifikovat nevyjádřená témata, implikace a problémy.','Při poslechu dokážu skrze jazyk, vynechané informace a nejednoznačnost řeči analyzovat zaujatost mluvčího.','Umím analyzovat řečové techniky a přístup mluvčího v různých kontextech.','Dokážu dát mluvčímu zpětnou vazbu o tom, co může zlepšit, aby měl vynikající projev.'][i] })),
-      'Prezentační dovednosti': Array.from({length: 16}, (_, i) => ({ step: i, description: ['Dokážu něco srozumitelně sdělit někomu, koho znám.','Dokážu něco srozumitelně sdělit malé skupince lidí, které znám.','Dokážu srozumitelně sdělit své myšlenky skupině lidí.','Když mluvím, řadím své myšlenky tak, aby byly pochopitelné.','Svá sdělení umím uspořádat tak, aby mi posluchači co nejlépe rozuměli.','Při projevu umím využívat formální jazyk, tón a výraz.','Svou řeč umím přizpůsobit účelu prezentace a publiku.','Dokážu svůj projev strukturovat tak, aby byl srozumitelný a zajímavý, a ke svým sdělením uvádím příklady.','Dokážu upravit jazykové prostředky a míru podrobností, aby byl můj projev v daném kontextu co nejzajímavější.','Dokážu upravit strukturu projevu, jazyk a gesta tak, abych zaujal publikum.','Dokážu měnit jazyk, tón a výraz podle automatických i vědomých reakcí svých posluchačů.','Dokážu předvídat různé reakce publika a připravit se na ně.','Aby byl můj projev zajímavější, umím být flexibilní – dokážu např. měnit jeho styl a obsah.','Zabývám se různými prezentačními styly a uvažuji nad jejich efektivitou.','Uvažuji o efektivitě různých prezentačních stylů a umím si vybrat styl, který je pro mě nejvhodnější.','Dokážu pronést efektivní projev, který má osobitý styl a je přizpůsobený situaci, a umím reflektovat, proč byl efektivní.'][i] })),
-      'Schopnost řešit problémy': Array.from({length: 16}, (_, i) => ({ step: i, description: ['Dokážu vyřešit problém podle pokynů dospělého.','Dokážu si říct o pomoc, když ji potřebuji.','Dokážu popsat nějaký svůj jednoduchý problém a najít někoho, kdo mi s ním pomůže.','S něčí pomocí si dokážu zjistit informace, které mi pomohou vyřešit jednoduchý problém.','Jednoduchý problém dokážu vyřešit různými způsoby.','Umím posoudit „pro a proti“ různých řešení jednoduchého problému a vybrat to nejlepší.','Umím vysvětlit, čím se liší jednoduchý a složitý problém.','Umím si udělat průzkum, abych lépe porozuměl složitým problémům.','Dokážu zhodnotit příčiny a důsledky složitého problému a zjistit si chybějící informace pomocí průzkumu.','Umím navrhnout několik možných řešení složitého problému a posoudit „pro a proti“ každého z nich.','Umím zhodnotit různá řešení složitého problému a vybrat to nejlepší.','Umím k řešení složitých problémů použít stromový diagram.','Dokážu při řešení složitých problémů použít hypotézy.','Vím, co je to deduktivní a induktivní logika, a umím je použít.','Poznám, které z mých úvah při řešení problému jsou pouze mé domněnky a jaký mohou mít na mé uvažování vliv.','Dokážu ohodnotit, jak efektivní jsou různé mé návrhy řešení složitého problému.'][i] })),
-    };
 
     // --- DOM Elements ---
+    const planTitleEl = document.getElementById('plan-title');
     const blocksContainer = document.getElementById('lesson-blocks-container');
     const sidebarPanelsContainer = document.getElementById('sidebar-panels');
     const addLessonBlockBtn = document.getElementById('add-lesson-block');
@@ -69,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportBtn = document.getElementById('export-btn');
     const importBtn = document.getElementById('import-btn');
     const importFileInput = document.getElementById('import-file-input');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalFooter = document.getElementById('modal-footer');
 
     // --- Templates ---
     const blockTemplate = document.getElementById('lesson-block-template');
@@ -82,22 +47,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZATION ---
     function init() {
-        // Load theme from localStorage or set default
         const savedTheme = localStorage.getItem('theme') || 'light-mode';
         document.body.className = savedTheme;
         themeSwitcher.innerHTML = savedTheme === 'dark-mode' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         
-        // Load data from localStorage or use initial data
         const savedPlan = localStorage.getItem('lessonPlan');
         if (savedPlan) {
             try {
                 lessonPlan = JSON.parse(savedPlan);
+                // Ensure softSkillSteps is present for older saved plans
+                if (!lessonPlan.softSkillSteps) {
+                    lessonPlan.softSkillSteps = initialPlanState.softSkillSteps;
+                }
             } catch (e) {
                 console.error("Failed to parse saved lesson plan:", e);
-                createInitialBlocks(); // Create default blocks if saved data is corrupt
+                lessonPlan = JSON.parse(JSON.stringify(initialPlanState));
+                createInitialBlocks();
             }
         } else {
-            createInitialBlocks(); // Create default blocks on first run
+            lessonPlan = JSON.parse(JSON.stringify(initialPlanState));
+            createInitialBlocks();
         }
 
         renderAll();
@@ -111,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderAll() {
+        planTitleEl.textContent = lessonPlan.title;
         renderSidebar();
         renderAllBlocks();
         updateSidebarUsage();
@@ -213,15 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
         blockEl.style.setProperty('--block-hue', blockData.hue);
         
         const contentTarget = blockEl.querySelector('.goals-content-target');
-        contentTarget.dataset.type = 'contentGoals';
         blockData.contentGoals.forEach(item => contentTarget.appendChild(createBlockItemElement(item)));
         
         const softskillTarget = blockEl.querySelector('.goals-softskill-target');
-        softskillTarget.dataset.type = 'softSkillGoals';
         blockData.softSkillGoals.forEach(item => softskillTarget.appendChild(createBlockItemElement(item)));
 
         const methodsTarget = blockEl.querySelector('.methods-column');
-        methodsTarget.dataset.type = 'methods';
         blockData.methods.forEach(item => methodsTarget.appendChild(createBlockItemElement(item)));
         
         const notesTarget = blockEl.querySelector('.notes-content');
@@ -249,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const subtitleEl = itemEl.querySelector('.item-subtitle');
         if (itemData.type === 'softSkillGoals') {
             if (itemData.selectedStep != null) {
-                const skillData = softSkillSteps[itemData.text];
+                const skillData = lessonPlan.softSkillSteps[itemData.text];
                 if (skillData) {
                     const step = skillData.find(s => s.step === itemData.selectedStep);
                     if (step) subtitleEl.innerHTML = `Krok ${itemData.selectedStep}: ${step.description}`;
@@ -302,11 +269,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function handleActionClicks(e) {
-        // Hide all open menus if clicking outside
         if (!e.target.closest('.menu-btn-dots')) {
             document.querySelectorAll('.menu-content.show').forEach(menu => menu.classList.remove('show'));
         }
-        // Untruncate details
         const focusedDetail = document.querySelector('.item-details.focused');
         if (focusedDetail && !focusedDetail.parentElement.contains(e.target)) {
                 focusedDetail.classList.add('truncated');
@@ -320,24 +285,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target.closest('.menu-btn-dots')) {
             e.preventDefault();
             const menu = target.closest('.menu-btn-dots').nextElementSibling;
+            // Close other menus before opening a new one
+            document.querySelectorAll('.menu-content.show').forEach(m => { if (m !== menu) m.classList.remove('show'); });
             menu.classList.toggle('show');
         }
         else if (target.matches('.delete-block')) {
             e.preventDefault();
-            if (confirm(`Opravdu chcete smazat tento výukový blok?`)) {
-                lessonPlan.blocks = lessonPlan.blocks.filter(b => b.id !== blockEl.dataset.blockId);
-                renderAllBlocks();
-                updateSidebarUsage();
-                saveData();
-            }
+            showModal({
+                title: 'Smazat blok',
+                body: 'Opravdu chcete smazat tento výukový blok?',
+                buttons: [
+                    { text: 'Zrušit', class: 'modal-btn-secondary' },
+                    { text: 'Smazat', class: 'modal-btn-primary', action: () => {
+                        lessonPlan.blocks = lessonPlan.blocks.filter(b => b.id !== blockEl.dataset.blockId);
+                        renderAllBlocks();
+                        updateSidebarUsage();
+                        saveData();
+                    }}
+                ]
+            });
         }
         else if (target.matches('.move-block')) {
             e.preventDefault();
-            alert('Pro přesun bloku ho uchopte a přetáhněte na požadovanou pozici.');
+            showModal({ title: 'Přesun bloku', body: 'Pro přesun bloku ho uchopte a přetáhněte na požadovanou pozici.' });
         }
         else if (target.matches('.block-properties')) {
             e.preventDefault();
-            alert('Změna barvy a případně dalších vlastností, zatím neimplementováno.');
+            showBlockPropertiesModal(blockEl.dataset.blockId);
         }
         else if (target.matches('.delete-item')) {
             e.preventDefault();
@@ -352,11 +326,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if (target.matches('.details-item')) {
             e.preventDefault();
-            const itemData = findItem(blockEl.dataset.blockId, itemEl.dataset.itemId).item;
-            const newDetails = prompt("Zadejte podrobnosti:", itemData.details || "");
+            const { item, blockId } = findItemByElement(itemEl);
+            const newDetails = prompt("Zadejte podrobnosti:", item.details || "");
             if (newDetails !== null) {
-                itemData.details = newDetails;
-                renderBlock(blockEl.dataset.blockId);
+                item.details = newDetails;
+                renderBlock(blockId);
                 saveData();
             }
         }
@@ -381,8 +355,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleDoubleClick(e) {
+        if(e.target.matches('#plan-title')) makeEditable(e.target, 'text');
         if(e.target.matches('.item-title')) makeEditable(e.target, 'text');
         else if(e.target.matches('.item-details')) makeEditable(e.target, 'textarea');
+        else if(e.target.matches('.item-subtitle')) {
+            const itemEl = e.target.closest('.block-item');
+            if(itemEl && itemEl.dataset.type === 'softSkillGoals') {
+                showStepSelector(itemEl);
+            }
+        }
     }
 
     // --- APPLICATION LOGIC ---
@@ -420,6 +401,17 @@ document.addEventListener('DOMContentLoaded', () => {
             input.remove();
             element.style.display = '';
 
+            if (element.id === 'plan-title') {
+                if (newText && newText !== lessonPlan.title) {
+                    lessonPlan.title = newText;
+                    element.textContent = newText;
+                    saveData();
+                } else {
+                    element.textContent = lessonPlan.title;
+                }
+                return;
+            }
+
             const itemEl = element.closest('.block-item');
             if (!itemEl) return;
 
@@ -428,9 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (element.matches('.item-title')) {
                 if (newText && newText !== item.text) {
                     item.text = newText;
-                    if (item.sourceId) { // If text is changed, it's no longer linked to sidebar
-                        item.sourceId = null;
-                    }
+                    if (item.sourceId) { item.sourceId = null; }
                 }
             } else if (element.matches('.item-details')) {
                 item.details = newText;
@@ -447,17 +437,17 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (e.key === 'Escape') {
                 input.remove();
                 element.style.display = '';
+                if(element.id === 'plan-title') element.textContent = lessonPlan.title;
             }
         });
     }
     
     function showStepSelector(itemEl) {
         const { item, blockId } = findItemByElement(itemEl);
-        const steps = softSkillSteps[item.text];
+        const steps = lessonPlan.softSkillSteps[item.text];
         if (!steps) return;
         
         const subtitleEl = itemEl.querySelector('.item-subtitle');
-        const originalHTML = subtitleEl.innerHTML;
         
         const select = document.createElement('select');
         select.innerHTML = `<option value="">-- Vyberte krok --</option>` +
@@ -471,11 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const selectedStep = select.value === "" ? null : parseInt(select.value, 10);
             if (item.selectedStep !== selectedStep) {
                 item.selectedStep = selectedStep;
-                renderBlock(blockId);
                 saveData();
-            } else {
-                 renderBlock(blockId); // Rerender to restore original view if nothing changed
             }
+            renderBlock(blockId); // Always rerender to restore view
         };
         
         select.addEventListener('change', saveSelection);
@@ -519,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        container.addEventListener('dragend', e => {
+        container.addEventListener('dragend', () => {
             if (draggedItem) draggedItem.classList.remove('dragging');
             draggedItem = null;
             draggedItemData = {};
@@ -530,8 +518,8 @@ document.addEventListener('DOMContentLoaded', () => {
         container.addEventListener('dragover', e => {
             e.preventDefault();
             const target = getDropTarget(e.target);
+            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
             if (target && isDropAllowed(target)) {
-                document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
                 target.classList.add('drag-over');
             }
         });
@@ -543,11 +531,8 @@ document.addEventListener('DOMContentLoaded', () => {
         container.addEventListener('drop', e => {
             e.preventDefault();
             const target = getDropTarget(e.target);
-            if(!target || !draggedItem || !isDropAllowed(target)) {
-                document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-                return;
-            }
-            target.classList.remove('drag-over');
+            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+            if(!target || !draggedItem || !isDropAllowed(target)) return;
             
             if (target.id === 'delete-zone') handleDropOnDelete();
             else if (target.matches('.lesson-block')) handleDropOnBlockReorder(target);
@@ -560,52 +545,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getDropTarget(element) {
-        if (draggedItemData.origin === 'block-reorder') {
-            return element.closest('.lesson-block');
-        }
+        if (draggedItemData.origin === 'block-reorder') return element.closest('.lesson-block');
         if (element.closest('#delete-zone')) return document.getElementById('delete-zone');
-
         return element.closest('.block-item, .drop-zone, .panel-content');
     }
     
     function isDropAllowed(target) {
-        if (!draggedItemData.type) return true; // for block reordering
+        if (!draggedItemData.type) return true; // for block reordering, delete zone etc.
 
-        const targetType = target.dataset.type;
+        const targetType = target.dataset.type || target.closest('.drop-zone')?.dataset.type;
         const sourceType = draggedItemData.type;
 
-        if (target.matches('.panel-content')) {
-            return sourceType === targetType;
-        }
+        if (target.matches('.panel-content')) return sourceType === targetType;
 
-        if (target.matches('.drop-zone')) {
+        if (targetType) {
             if (draggedItemData.origin === 'sidebar') {
                 return sourceType === targetType || (sourceType === 'bigQuestions' && targetType === 'notes');
             }
             if (draggedItemData.origin === 'block') {
-                return sourceType === targetType || 
-                       (sourceType === 'contentGoals' && targetType === 'softSkillGoals') ||
-                       (sourceType === 'softSkillGoals' && targetType === 'contentGoals');
+                return sourceType === targetType; // This is the fix: only allow drops in same-type columns
             }
         }
         
-        if (target.matches('.block-item')) {
-            const targetParentType = target.parentElement.closest('.drop-zone')?.dataset.type;
-            return isDropAllowed(target.parentElement.closest('.drop-zone'));
-        }
-
-        return true; // Default allow for delete zone, etc.
+        return false;
     }
 
     function handleDropOnDelete() {
         if (draggedItemData.origin === 'block') {
-            if (confirm('Opravdu chcete smazat tuto položku?')) {
-                deleteItemFromBlock(draggedItemData.blockId, draggedItemData.itemId);
-                renderBlock(draggedItemData.blockId);
-                updateSidebarUsage();
-            }
+            showModal({
+                title: 'Smazat položku', body: 'Opravdu chcete smazat tuto položku?',
+                buttons: [
+                    { text: 'Zrušit', class: 'modal-btn-secondary' },
+                    { text: 'Smazat', class: 'modal-btn-primary', action: () => {
+                        deleteItemFromBlock(draggedItemData.blockId, draggedItemData.itemId);
+                        renderBlock(draggedItemData.blockId);
+                        updateSidebarUsage();
+                        saveData();
+                    }}
+                ]
+            });
         } else {
-            alert('Položky z nabídky nelze smazat přetažením sem.');
+            showModal({ title: 'Chyba', body: 'Položky z nabídky nelze smazat přetažením sem.' });
         }
     }
     
@@ -615,11 +595,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sourceBlockId === targetBlockId) return;
 
         const sourceIndex = lessonPlan.blocks.findIndex(b => b.id === sourceBlockId);
-        let targetIndex = lessonPlan.blocks.findIndex(b => b.id === targetBlockId);
+        const targetIndex = lessonPlan.blocks.findIndex(b => b.id === targetBlockId);
         
         if (sourceIndex > -1 && targetIndex > -1) {
             const [movedBlock] = lessonPlan.blocks.splice(sourceIndex, 1);
-            if (sourceIndex < targetIndex) targetIndex--; // adjust index if moving down
             lessonPlan.blocks.splice(targetIndex, 0, movedBlock);
             renderAllBlocks();
         }
@@ -653,22 +632,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (draggedItemData.origin === 'sidebar') {
             const newItemType = (draggedItemData.type === 'bigQuestions') ? 'notes' : draggedItemData.type;
-            const destinationArray = targetBlock[newItemType];
-            destinationArray.push({
-                id: `item${lessonPlan.config.nextItemId++}`,
-                sourceId: draggedItemData.sourceId,
-                text: draggedItemData.text,
-                type: newItemType,
-                details: '', selectedStep: null
+            targetBlock[newItemType].push({
+                id: `item${lessonPlan.config.nextItemId++}`, sourceId: draggedItemData.sourceId,
+                text: draggedItemData.text, type: newItemType, details: '', selectedStep: null
             });
         } else if (draggedItemData.origin === 'block') {
             const { item, collection, index } = findItem(draggedItemData.blockId, draggedItemData.itemId);
-            collection.splice(index, 1); // Remove from old location
-            item.type = targetType; // Update type for goal swapping
-            targetBlock[targetType].push(item); // Add to new location
+            collection.splice(index, 1);
+            targetBlock[targetType].push(item);
             
             if (draggedItemData.blockId !== targetBlockId) {
-                renderBlock(draggedItemData.blockId); // Re-render source block if different
+                renderBlock(draggedItemData.blockId);
             }
         }
         
@@ -678,15 +652,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function handleDropOnBlockItem(targetItemEl) {
         const { collection: sourceCollection, index: sourceIndex, blockId: sourceBlockId } = findItemByElement(draggedItem);
-        const { item: targetItem, collection: targetCollection, index: targetIndex, blockId: targetBlockId } = findItemByElement(targetItemEl);
+        const { collection: targetCollection, index: targetIndex } = findItemByElement(targetItemEl);
 
-        // If dropping on an item in a different block or different column type
-        if (sourceBlockId !== targetBlockId || sourceCollection !== targetCollection) {
+        if (sourceCollection !== targetCollection) {
             handleDropOnBlockColumn(targetItemEl.parentElement);
             return;
         }
 
-        // Reordering within the same list
         const [movedItem] = sourceCollection.splice(sourceIndex, 1);
         sourceCollection.splice(targetIndex, 0, movedItem);
         renderBlock(sourceBlockId);
@@ -695,21 +667,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- DATA HELPERS ---
     
-    function findBlock(blockId) {
-        return lessonPlan.blocks.find(b => b.id === blockId);
-    }
+    function findBlock(blockId) { return lessonPlan.blocks.find(b => b.id === blockId); }
     
     function findItem(blockId, itemId) {
         const block = findBlock(blockId);
-        if (!block) return { item: null, collection: null, index: -1, type: null };
+        if (!block) return { item: null };
         for (const type of ['contentGoals', 'softSkillGoals', 'methods', 'notes']) {
             const collection = block[type];
             const index = collection.findIndex(i => i.id === itemId);
-            if (index > -1) {
-                return { item: collection[index], collection, index, type };
-            }
+            if (index > -1) return { item: collection[index], collection, index, type };
         }
-        return { item: null, collection: null, index: -1, type: null };
+        return { item: null };
     }
     
     function findItemByElement(itemEl) {
@@ -724,11 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getSidebarType(panelId) {
-        switch(panelId) {
-            case 'softSkills': return 'softSkillGoals';
-            case 'bigQuestions': return 'bigQuestions';
-            default: return panelId;
-        }
+        return panelId === 'softSkills' ? 'softSkillGoals' : (panelId === 'bigQuestions' ? 'bigQuestions' : panelId);
     }
 
     // --- DATA PERSISTENCE & IMPORT/EXPORT ---
@@ -738,29 +702,30 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('lessonPlan', JSON.stringify(lessonPlan));
         } catch (e) {
             console.error("Failed to save data to localStorage:", e);
-            alert("Nepodařilo se uložit data. Možná je úložiště plné.");
+            showModal({ title: "Chyba ukládání", body: "Nepodařilo se uložit data. Možná je úložiště plné." });
         }
     }
 
     function loadPlanData(newData) {
-        // Basic validation
         if (newData && newData.sidebar && newData.blocks && newData.config) {
             lessonPlan = newData;
+            if (!lessonPlan.softSkillSteps) lessonPlan.softSkillSteps = initialPlanState.softSkillSteps; // Compatibility
             renderAll();
             saveData();
-            alert("Data byla úspěšně naimportována.");
+            showModal({ title: "Import úspěšný", body: "Data byla úspěšně naimportována." });
         } else {
-            alert("Chyba: Soubor pro import má neplatný formát.");
+            showModal({ title: "Chyba importu", body: "Soubor pro import má neplatný formát." });
         }
     }
 
     function exportDataToJSON() {
+        const sanitizedTitle = lessonPlan.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/gi, '_').toLowerCase();
         const dataStr = JSON.stringify(lessonPlan, null, 2);
         const dataBlob = new Blob([dataStr], {type: "application/json"});
         const url = URL.createObjectURL(dataBlob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `vyukovy-plan-${new Date().toISOString().slice(0,10)}.json`;
+        link.download = `${sanitizedTitle}-${new Date().toISOString().slice(0,10)}.json`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -770,23 +735,89 @@ document.addEventListener('DOMContentLoaded', () => {
     function importDataFromJSON(event) {
         const file = event.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
-                const importedData = JSON.parse(e.target.result);
-                loadPlanData(importedData);
+                loadPlanData(JSON.parse(e.target.result));
             } catch (error) {
-                console.error("Error parsing JSON file:", error);
-                alert("Při zpracování souboru došlo k chybě. Ujistěte se, že se jedná o platný JSON soubor.");
+                showModal({ title: "Chyba při zpracování souboru", body: "Ujistěte se, že se jedná o platný JSON soubor." });
             }
         };
-        reader.onerror = () => {
-             alert("Nepodařilo se přečíst soubor.");
-        };
+        reader.onerror = () => showModal({ title: "Chyba", body: "Nepodařilo se přečíst soubor." });
         reader.readAsText(file);
-        // Reset file input to allow importing the same file again
         event.target.value = '';
+    }
+
+    // --- MODAL DIALOG ---
+    function showModal({title, body, bodyHTML, buttons = [{text: 'OK', class: 'modal-btn-primary'}]}) {
+        modalTitle.textContent = title;
+        modalBody.textContent = body || '';
+        if (bodyHTML) modalBody.innerHTML = bodyHTML;
+        modalFooter.innerHTML = '';
+
+        buttons.forEach(btnInfo => {
+            const btn = document.createElement('button');
+            btn.textContent = btnInfo.text;
+            btn.className = `modal-btn ${btnInfo.class || 'modal-btn-secondary'}`;
+            btn.addEventListener('click', () => {
+                if (btnInfo.action) btnInfo.action();
+                hideModal();
+            });
+            modalFooter.appendChild(btn);
+        });
+        modalOverlay.classList.add('visible');
+    }
+
+    function hideModal() {
+        modalOverlay.classList.remove('visible');
+    }
+
+    function showBlockPropertiesModal(blockId) {
+        const block = findBlock(blockId);
+        const blockIndex = lessonPlan.blocks.findIndex(b => b.id === blockId);
+
+        const bodyHTML = `
+            <div class="form-group">
+                <label for="block-color">Barva bloku</label>
+                <div class="hue-slider-wrapper">
+                    <input type="range" id="block-color" min="0" max="360" value="${block.hue}">
+                    <div class="hue-preview" style="background-color: hsl(${block.hue}, 58%, 51%)"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="block-order">Pořadí bloku (1 - ${lessonPlan.blocks.length})</label>
+                <input type="number" id="block-order" min="1" max="${lessonPlan.blocks.length}" value="${blockIndex + 1}">
+            </div>
+        `;
+
+        showModal({
+            title: 'Vlastnosti bloku',
+            bodyHTML: bodyHTML,
+            buttons: [
+                { text: 'Zrušit', class: 'modal-btn-secondary' },
+                { text: 'Uložit', class: 'modal-btn-primary', action: () => {
+                    const newHue = document.getElementById('block-color').value;
+                    const newPosition = parseInt(document.getElementById('block-order').value, 10);
+                    
+                    block.hue = newHue;
+
+                    if (newPosition >= 1 && newPosition <= lessonPlan.blocks.length) {
+                        const [movedBlock] = lessonPlan.blocks.splice(blockIndex, 1);
+                        lessonPlan.blocks.splice(newPosition - 1, 0, movedBlock);
+                    }
+                    
+                    renderAllBlocks();
+                    saveData();
+                }}
+            ]
+        });
+
+        // Add live preview for color slider
+        const colorSlider = document.getElementById('block-color');
+        const colorPreview = document.querySelector('.hue-preview');
+        colorSlider.addEventListener('input', () => {
+            colorPreview.style.backgroundColor = `hsl(${colorSlider.value}, 58%, 51%)`;
+        });
     }
     
     init();
