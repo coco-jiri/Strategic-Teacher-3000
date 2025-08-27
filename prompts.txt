@@ -1,0 +1,421 @@
+v0.4
+co není a mělo by být
+) softskillové cíle jen volitelně 
+) darkmode defaultně
+) hromadná správa položek obsahových cílů, metod a otázek v dialogovém okně (zvlášt - tři samostatné dialogy). Každá položka na nový řádek
+) položky umístěné v plánu lze smazat přetažením do pravého panelu (uživatel se nemusí trefovat na popelnici)
+) po vytvoření nové poznámky se přepne focus rovnou do inputu pro úpravu této poznámky (abych nemusel dvakrát klikat na "Nová poznámka..."). Text "Nová poznámka..." ať je jenom dakový ten ghoust (nevím jak se jmenuje, zmizí když začnu psát). Stejně pohodlně, ať se přidávají podrobnosti u cílů a metod v plánu. Teď to vyvolává prompty
+
+bugy
+) nefunguje mazání položek na popelnici - ta se ukáze, ale po dropnutí se nic nestane
+
+
+
+jak moc náročný bude implementovat tlačítko zpět a vpřed?
+
+0.3
+Další bugy:
+
+1) položky obsahových a softskillových cílů lze při přetahování v rámci bloků přetáhnout i do nesprávného sektoru (obsahové do softskillových a naopak). Při tahání z nabídky vpravo to funugje správně
+2) podrobnosti položek bloků
+	a) u cílů (obsahové i softskill) se nějak asi nezapočítávájí do prostoru pro rendrování - někdy přetékají z bloku, nebo se překrývají s další položkou
+	b) dvojklikem na podrobnosti softskillového cíle (podkrok dané kompetence) by se měla znovu nabídnout roletka pro výběr jiného kroku daného cíle
+3) součástí uloženého json musí být i všechny softSkillSteps.
+4) vytvoř nějaký pěkný nerusivý dialog, který se bude používat místo alertu a třeba pro nastavení vlastností bloku (barva apod)
+5) implementuj nastavení bloků (barva a pořadí) po kliknutí Vlastnosti
+6) každý lessonPlan musí mít samozřejmě svůj název (např. Infromatika 1. ročík), který se dá upravovat po dvojkliku a při exportu se bez diakritiky propíše do názvu souboru
+
+
+(čísla pořadí u bloků?)
+
+
+
+0.2
+========================================================================================
+tady dávám soubory aplikace pro plánování výuky, kterou vytvářím.  Pomáhá vytvářet komplex souvisejících výukových bloků přetahováním položek z nabídek vpravo a jejich případnou následnou úpravou. Potřebuji
+
+1) přidat možnost přetahovat položky ve sloupci Poznámky i mezi jednotlivými bloky (teď to jde jen v rámci jednoho bloku) jako u ostatních sloupců.
+
+2) Přidat vpravo k nabídkám Obsahové cíle, Softskillové cíle, Metody, nabídku "Velké otázky", má fungovat stejně jako Metody, akorát se přetahuje do sloupce poznámky. Příkladem je otázka "Jakým způsobem se dá využít AI k vlastnímu učení?" nebo "Co znamená, že počítače funugjí jen na 1 a 0?", "Jaké výzvy přináší AI pro lidstvo a pro mě?" apod.
+
+3) přidat export a import všech dat do json. Myslím tím všechny výukové bloky, položky z nabídek obsahu (musí zůstat jejich "synchronizace" = Pokud je daný cíl nebo metoda použita v obsahu, má v nabídce jiný styl) a poznámky v blocích.
+
+4) místo <i class="fas fa-ellipsis-v"></i> použít kulaté tlačítko se třemi tečkami
+
+0.1
+========================================================================================
+Vytvářim  html stránku - nástroj pro plánování hodin "Strategic Teacher 3000". Pomáhá vytvářet komplex souvisejících výukových bloků přetahováním položek z nabídek vpravo a jejich případnou následnou úpravou. Schéma stránky je na přiloženém obrázku.
+
+
+
+A,B,C -  Nabídka obsahu
+A - Obsahové cíle
+B - Softskillové cíle (každý má podkroky 0-15, v této nabídce se nezobrazují jednolivé kroky)
+C - Metody
+- Každý blok A,B,C obsahuje položky, každou ve zvláštním obdélníku (přec celou šířku krom paddingu nadřazeného bloku, jen lehce kontrastní s pozadím bloku)
+- po mouseoveru a některý z bloků A,B,C se vpravo dole daného bloku objeví + v kroužku pro přidání nové položky (vyvolá dialog s "název nové položky")
+- každou položku lze uchopit a přetáhnout DD do 
+	1) příslušného sloupce v libovolném Výukovém bloku (po naježí na daný blok se orámuje odpovídající sloupec pro usnadnění orientace) nebo
+	2) při přetáhnutí a zůstání chvíli na jiné pozici v rámci bloku (A,B nebo C) změna pořadí položky
+	3) křížku (x) který se objeví vedle kroužku s + po uchopení položky, tím se položka smaže
+- bloky jsou sbalitelné (stříška dolu a nahoru)
+- nabídky jsou zafixované na pravé straně stránky a nerolují (při větším počtu položek se roluje uvnitř každého bloku zvlášt)
+
+
+Arabské číslice - Výukové bloky = VB
+- každý rozdělen na tři sloupce
+	- I - cíle - rozdělen na dva řádky, nahoře cíle obsahové, dole cíle softskillové
+	- II - metody
+	- III - poznámky
+- při mouseoveru na výukový blok (kromě drag and drop přidávání obsahu) se zobrazí tři tečky v kruhu vpravo nahoře - po rozkliknutí odkazy: Duplikovat, Podrobnosti, Smazat
+- každý sloupec obsahuje položky (v obdélníku s lehce tmavším pozadím)
+- dovjitým kliknutím na obdélník lze změnit textovou hodnotu položky
+- při mouseouveru položky -> tři tečky v kruhu, po kliknutí na ně: Upravit, Podrobnosti, Duplikovat, Smazat
+- položky defoultně nemají žádné podrobnosti. podrobnosti mohou být textové řetězce. při přidání podrobnosti se ukáže na novém řádku pod názvem cíle (trochu menší), delší než 2 řádky se zkrátí a rozevře jen při kliknutí na cíl (nebo podrobnost), po ztracení fokusu se zase sbalí. Double clickem lze podrobnosti upravit.
+- položky v I b (softskillové cíle) - mají dva řádky - název soft skillu a konkrétní krok (defaultně není vybraný žádný a na druhém řádku (menší) je jen odkaz "Vybrat krok", který otevře roletu 15, resp 16 kroků k danému cíli.
+- pro přidávání poznámek je v daném sloupci III tlačítko pod poslední položkou (tzn. v prázdném sloupci nahoře na místě první položky) + v kroužku. položky se chovají stejně jako ve sloupcích I a II - lze je přemisťovat v pořadí, doubleclickem upravit, přidávat podrobnosti pod třemi tečkami
+- výukové bloky rolují se stránkou, lze měnit DD jejich pořadí
+- všechny položky lze přesouvat DD v pořadí i do jiných VB
+- vlevo nahoře má VB číslo pořadí
+
+Všechny cíle a metody v nabídkách mají svá id (budou stejná v db). Pokud je daný cíl nebo metoda použita v obsahu, má v nabídce menší font-weight. Upravením položky v obsahu se propojení ztratí (ale bacha, může být použito i v jiném bloku, pokud tomu tak je, musí zůstatn menší font-weight). Propojení se neztratí přidáním podrobností k položce.
+
+Počet výukových bloků default 7 lze snadno přidávat ikonou +, odebrat klikem na tři tečky v kruhu.
+Stránka bude mít světlou i darkmode verzi. 
+Barvy jsou "generovány automaticky" - výukové bloky jdou v barvách duhy (první je random), pastelové odstíny. Výukový blok tvoří různě světlé odstíny dané barvy (konstatny změny v kódu). Další výukový blok je posunutý na spektru o konstantu definovanou v kódu. Při přesunu pořadí barva zůstává (pořadí duhy nemusí být zachováno).
+Příprav i json strukturu pro 16 kroků ke každému soft-skillu, ze kterých se bude brát nabídka do roletky po přidání do obsahu výukového bloku. Doplním je tam později.
+Potřebuju uchovávat (a synchronizovat) celou strukturu výukového plánu i objektově, resp. v json struktuře, kterou budu exportovat/importovat
+Označení ABC, I, II, III ve stránce nechci, to je jen pro tebe. 
+Názvy sloupců budou jen jednou nahoře (cíle, metody,  poznámky) na tabulkou. 
+Pozadí výukových bloků není random color. Random je jen první. Ty ostatní už jsou o huestep ve směru duhy.
+Kroky softskilů se číslují 0-15 (ne 1-16).
+Bloky A,B,C se musí vždy vejít - rovnoměrně vysoké. Když se některý z nich sbalí, velikost ostatních se adekvátně přizpůsobí.
+Při pridání nové metody se doroluje na konec bloku C až k té nové (resp. na konec bloku A při přidání obsahového cíle).
+Tlačítko + se objevuje u bloků A a C. Ne u bloku B. 
+Při darkmode se musí udělat tmavé i pozadí výukových bloků. Stále trochu ovlivněno barvou bloku. 
+To provázání jepotřeba kontrolovat po každém přídání nebo úpravě obsahu a při inicializaci. 
+Zadání názvu nové položky po přidání chci potvrdit entrem (teď musím používat myš).
+
+
+
+Položky nabídek:
+
+Obsahové cíle
+-------------
+Ukládání
+Práce s klávesnicí
+Cloudové sdílení
+Prezentace
+Excel
+Word
+Email
+Emailová etiketa
+Malování
+Natáčení videa
+Jednoduchý střih
+Synchonizace zvuku
+
+
+Softskillové cíle
+-------------
+Schopnost naslouchat
+Prezentační dovednosti
+Schopnost řešit problémy
+Kreativní myšlení
+Pozitivní nastavení
+Cílevědomost
+Vůdčí schopnosti
+Týmová práce
+
+Metody
+------------
+Dokončování příběhů
+Dramatizace
+Insert
+Klíčová slova
+Minutové rande
+Horké křeslo
+Expertní skupiny
+Galerie
+Brownův pohyb
+
+Jednotlivé kroky s soft-skillovým cílům:
+Schopnost naslouchat
+--------------------
+0
+Dokážu ostatním chvíli naslouchat.
+1
+Dokážu naslouchat dospělým, řídit se jejich pokyny a zopakovat, co jsem slyšel.
+2
+Dokážu naslouchat spolužákům a ptát se na to, co jsem slyšel.
+3
+Dokážu sledovat rozhovor a zrekapitulovat, čeho se týkal.
+4
+Dokážu vysvětlit, že komunikace má různé účely, a umím účel komunikace identifikovat.
+5
+Dokážu poslouchat delší projev a umím rozpoznat klíčové informace, které potřebuji.
+6
+Dokážu se účastnit skupinové diskuze a odpovídat na otázky.
+7
+Dokážu analyzovat, jak mluvčí používá gesta a jazyk k upoutání pozornosti posluchačů.
+8
+Umím analyzovat, jak mluvčí mění jazyk za různými účely.
+9
+Umím analyzovat tón mluvčího, rozpoznat, na co klade důraz, jaké je jeho společenské postavení a jaký to má vliv na posluchače.
+10
+Umím pokládat prohlubující a rozšiřující otázky, abych si ověřil a prohloubil vlastní porozumění.
+11
+Dokážu rozeznat a analyzovat odlišné názory různých mluvčích.
+12
+Dokážu při poslechu identifikovat nevyjádřená témata, implikace a problémy.
+13
+Při poslechu dokážu skrze jazyk, vynechané informace a nejednoznačnost řeči analyzovat zaujatost mluvčího.
+14
+Umím analyzovat řečové techniky a přístup mluvčího v různých kontextech.
+15
+Dokážu dát mluvčímu zpětnou vazbu o tom, co může zlepšit, aby měl vynikající projev.
+
+Prezentační dovednosti
+---------------------
+0
+Dokážu něco srozumitelně sdělit někomu, koho znám.
+1
+Dokážu něco srozumitelně sdělit malé skupince lidí, které znám.
+2
+Dokážu srozumitelně sdělit své myšlenky skupině lidí.
+3
+Když mluvím, řadím své myšlenky tak, aby byly pochopitelné.
+4
+Svá sdělení umím uspořádat tak, aby mi posluchači co nejlépe rozuměli.
+5
+Při projevu umím využívat formální jazyk, tón a výraz.
+6
+Svou řeč umím přizpůsobit účelu prezentace a publiku.
+7
+Dokážu svůj projev strukturovat tak, aby byl srozumitelný a zajímavý, a ke svým sdělením uvádím příklady.
+8
+Dokážu upravit jazykové prostředky a míru podrobností, aby byl můj projev v daném kontextu co nejzajímavější.
+9
+Dokážu upravit strukturu projevu, jazyk a gesta tak, abych zaujal publikum.
+10
+Dokážu měnit jazyk, tón a výraz podle automatických i vědomých reakcí svých posluchačů.
+11
+Dokážu předvídat různé reakce publika a připravit se na ně.
+12
+Aby byl můj projev zajímavější, umím být flexibilní – dokážu např. měnit jeho styl a obsah.
+13
+Zabývám se různými prezentačními styly a uvažuji nad jejich efektivitou.
+14
+Uvažuji o efektivitě různých prezentačních stylů a umím si vybrat styl, který je pro mě nejvhodnější.
+15
+Dokážu pronést efektivní projev, který má osobitý styl a je přizpůsobený situaci, a umím reflektovat, proč byl efektivní.
+
+Schopnost řešit problémy
+------------------------
+0
+Dokážu vyřešit problém podle pokynů dospělého.
+1
+Dokážu si říct o pomoc, když ji potřebuji.
+2
+Dokážu popsat nějaký svůj jednoduchý problém a najít někoho, kdo mi s ním pomůže.
+3
+S něčí pomocí si dokážu zjistit informace, které mi pomohou vyřešit jednoduchý problém.
+4
+Jednoduchý problém dokážu vyřešit různými způsoby.
+5
+Umím posoudit „pro a proti“ různých řešení jednoduchého problému a vybrat to nejlepší.
+6
+Umím vysvětlit, čím se liší jednoduchý a složitý problém.
+7
+Umím si udělat průzkum, abych lépe porozuměl složitým problémům.
+8
+Dokážu zhodnotit příčiny a důsledky složitého problému a zjistit si chybějící informace pomocí průzkumu.
+9
+Umím navrhnout několik možných řešení složitého problému a posoudit „pro a proti“ každého z nich.
+10
+Umím zhodnotit různá řešení složitého problému a vybrat to nejlepší.
+11
+Umím k řešení složitých problémů použít stromový diagram.
+12
+Dokážu při řešení složitých problémů použít hypotézy.
+13
+Vím, co je to deduktivní a induktivní logika, a umím je použít.
+14
+Poznám, které z mých úvah při řešení problému jsou pouze mé domněnky a jaký mohou mít na mé uvažování vliv.
+15
+Dokážu ohodnotit, jak efektivní jsou různé mé návrhy řešení složitého problému.
+
+Kreativní myšlení
+--------------------
+0
+Umím si něco představit a předvést to.
+1
+Umím popisovat, co si představuju.
+2
+Umím zapsat, nakreslit nebo zahrát, co si představuju.
+3
+Umím si něco představit na základě zadaných kritérií.
+4
+Umím v představách vyjít od nějakého výchozího bodu a dál je rozvíjet sám.
+5
+Umím myšlenky a představy kombinovat a vymýšlet tak představy nové.
+6
+Umím vysvětlit, co je to kreativita a jak se dá využít v různých situacích.
+7
+Umím popsat, jakým způsobem v různých oblastech kreativitu využívám.
+8
+Umím podpořit svou kreativitu a vymýšlet nové nápady s pomocí myšlenkové mapy.
+9
+Umím popsat, jak může kreativitu podpořit nějaká zdánlivě nesouvisející, nahodilá myšlenka.
+10
+Umím vysvětlit, jak kreativitu podporuje zvážení různých pohledů na věc.
+11
+Umím vysvětlit, jak maximalizovat kreativitu při spolupráci ve skupině.
+12
+Umím reflektovat, jak používám nástroje podporující kreativitu.
+13
+Umím si vybrat nástroje podporující kreativitu, které se nejlépe hodí k mému způsobu práce, a umím vysvětlit proč.
+14
+Umím navrhnout několik nástrojů podporujících kreativitu vhodných pro konkrétní situaci.
+15
+Z nástrojů podporujících kreativitu umím zvolit ten, který bude v určité situaci nejefektivnější, a umím vysvětlit proč.
+
+Pozitivní nastavení
+------------
+0
+Umím vysvětlit, co může lidi rozveselit a rozesmutnit.
+1
+Umím poznat, že se něco nedaří, a vím, proč se mohou lidé zlobit nebo být rozrušení.
+2
+Umím vysvětlit, proč nepomáhá něco vzdát, když se mi to nedaří.
+3
+Když se něco nedaří, snažím se zachovat klid.
+4
+Když se mi něco nepodaří, přemýšlím proč a zkouším to dál.
+5
+Když se něco nedaří, zkouším to dál a snažím se povzbudit i ostatní.
+6
+I když je něco náročné, nevzdávám se a motivuji také ostatní.
+7
+V náročných situacích se umím zaměřit na to pozitivní.
+8
+Umím pozitiva náročné situace vysvětlit ostatním.
+9
+Umím vymyslet, jak náročnou situaci změnit v pozitivní příležitost.
+10
+V náročné situaci se nevzdám, ale naopak vymyslím nejlepší způsob, jak v ní pokročit.
+11
+Nebojím se riskovat, i když bych mohl udělat chybu, a umím popsat, jak bych se z ní poučil.
+12
+Umím vyhodnotit a zvládat riskantní situace.
+13
+Umím si uvědomit a zhodnotit vlastní negativní emoce a zvolit pozitivní postup.
+14
+Když cítím negativní emoce, umím zvolit vhodný pozitivní přístup vzhledem ke kontextu a k tomu, jaký to bude mít dopad na ostatní.
+15
+Umím zvolit vhodný pozitivní přístup, když cítím negativní emoce v neznámém kontextu, a umím svůj postup odůvodnit.
+
+Cílevědomost
+------------
+0
+Umím poznat, když je něco pro mě těžké.
+1
+Dokážu vysvětlit, co znamená „snažit se, jak nejlépe umím“.
+2
+Dokážu vysvětlit, proč je důležité snažit se, jak nejlépe umím, když se chci v něčem zlepšit.
+3
+Dokážu se snažit, jak nejlépe umím, a jsem pak sám na sebe pyšný.
+4
+Sám si hledám příležitosti vyzkoušet něco náročného a žádám dospělé, aby mi zadávali různé výzvy.
+5
+Umím si stanovovat cíle s pomocí učitele nebo jiného dospělého.
+6
+Umím si samostatně stanovit cíl, který mi umožní vyzkoušet si něco náročného.
+7
+Umím si seřadit úkoly podle důležitosti, aby se mi můj cíl lépe plnil.
+8
+Umím zjistit, jaké zdroje k dosažení svých cílů potřebuji, a vím, jak se k nim dostat.
+9
+Umím si samostatně naplánovat, jak dosáhnout jednoduchého cíle pomocí jeho rozložení na dílčí kroky a získání potřebných zdrojů.
+10
+Umím efektivně zhodnotit své schopnosti a identifikovat, v čem se můžu zlepšit.
+11
+Umím sám sebe motivovat k samostatnému plnění svých plánů a dokážu dosáhnout svého cíle pomocí metody SMART.
+12
+Vyhledávám zpětnou vazbu včetně konstruktivní kritiky, aby se mi mé stanovené cíle lépe plnily.
+13
+Umím si na základě zhodnocení svých silných a slabých stránek stanovovat dlouhodobé cíle v těch oblastech, ve kterých bych se rád zlepšil.
+14
+Umím si dlouhodobý cíl rozdělit na menší krátkodobější dílčí cíle, které mi pomohou postupně se k němu dopracovat.
+15
+Umím své dílčí cíle a kroky přizpůsobit změně okolností.
+
+Vůdčí schopnosti
+---------------
+0
+Někdy dokážu popsat, jak se cítím.
+1
+Umím popsat, jak se cítím, svému týmu.
+2
+Umím popsat, jak se cítí členové mého týmu.
+3
+Umím rozdělit úkoly tak, aby měl každý z týmu něco na práci, a umím členům svého týmu pomoct, když to potřebují.
+4
+Umím převzít zodpovědnost za to, že členové mého týmu splní své úkoly včas.
+5
+Umím svému týmu pomoct dojít k rozhodnutí, se kterým bude většina členů spokojena, a dokončit tak zadaný úkol.
+6
+Umím řešit neshody mezi členy svého týmu.
+7
+Umím zhodnotit své silné a slabé stránky a vím, jak jejich znalost nejlépe využít při vedení týmu.
+8
+Umím popsat silné stránky a zájmy členů svého týmu.
+9
+Umím využít znalost silných stránek členů svého týmu k tomu, abychom úspěšně splnili týmový úkol.
+10
+Poznám, že se v mém týmu schyluje ke konfliktu, a vím, jakými strategiemi můžu takovou situaci vyřešit.
+11
+Umím popsat různé způsoby, jak svůj tým motivovat.
+12
+Umím podle situace upravovat, jakým způsobem svůj tým motivuji.
+13
+Umím popsat různé styly vedení týmu a vysvětlit, který podle svého názoru používám já a proč si to myslím.
+14
+Umím vysvětlit, jaká pozitiva a negativa mají jednotlivé styly vedení, a uvědomuji si, jaké nedostatky má styl, ke kterému mám blízko já.
+15
+Umím zvolit vhodný styl vedení vzhledem ke kontextu a členům svého týmu.
+
+Týmová práce
+------------
+0
+Rád se s ostatními dětmi vystřídám.
+1
+Umím na něčem spolupracovat s ostatními dětmi.
+2
+Umím vysvětlit, proč je někdy lepší pracovat v týmu než pracovat sám.
+3
+Při týmové práci si beru na starost různé úkoly a své úkoly zvládnu dokončit.
+4
+Umím se svým týmem dobře vycházet, a když se nemůžeme dohodnout, umím to vyřešit.
+5
+Když mám svou část úkolu hotovou, umím pomoct ostatním členům týmu.
+6
+Pomáhám svému týmu s rozhodováním a sám navrhuji nápady.
+7
+Umím ocenit nápady ostatních a sám přispívám užitečným způsobem.
+8
+Do týmových diskuzí zahrnuju všechny členy a všechny povzbuzuju, aby k nim přispěli.
+9
+Umím poznat, že se schyluje ke konfliktu a předejít mu.
+10
+Umím rozpoznat, že se ke konfliktu schyluje mezi jinými členy týmu, a navrhnout jim, jak mu předejít.
+11
+K týmovým diskuzím umím přispívat výstižně, promyšleně a tak, aby to bylo užitečné.
+12
+Umím zhodnotit výkon svého týmu a navrhnout zlepšení.
+13
+Umím reflektovat a hodnotit, jak můj tým přistupuje k úkolům, a zlepšit jeho výkon, abychom dosahovali lepších výsledků.
+14
+Umím zhodnotit silné a slabé stránky vedoucího týmu a aktivně ho podpořit, když to potřebuje.
+15
+Umím rozpoznat schopnosti členů svého týmu a vysvětlit, jak se navzájem můžeme podpořit, abychom se mohli zlepšovat.
