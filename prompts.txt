@@ -2,6 +2,7 @@ v0.4
 co není a mělo by být
 ) softskillové cíle jen volitelně 
 ) darkmode defaultně
+) 
 ) hromadná správa položek obsahových cílů, metod a otázek v dialogovém okně (zvlášt - tři samostatné dialogy). Každá položka na nový řádek
 ) položky umístěné v plánu lze smazat přetažením do pravého panelu (uživatel se nemusí trefovat na popelnici)
 ) po vytvoření nové poznámky se přepne focus rovnou do inputu pro úpravu této poznámky (abych nemusel dvakrát klikat na "Nová poznámka..."). Text "Nová poznámka..." ať je jenom dakový ten ghoust (nevím jak se jmenuje, zmizí když začnu psát). Stejně pohodlně, ať se přidávají podrobnosti u cílů a metod v plánu. Teď to vyvolává prompty
@@ -419,3 +420,4 @@ Umím reflektovat a hodnotit, jak můj tým přistupuje k úkolům, a zlepšit j
 Umím zhodnotit silné a slabé stránky vedoucího týmu a aktivně ho podpořit, když to potřebuje.
 15
 Umím rozpoznat schopnosti členů svého týmu a vysvětlit, jak se navzájem můžeme podpořit, abychom se mohli zlepšovat.
+
